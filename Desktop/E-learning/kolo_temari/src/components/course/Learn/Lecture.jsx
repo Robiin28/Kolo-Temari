@@ -12,6 +12,7 @@ const sections = [
       { id: '2', title: 'Video Lecture', videoSrc: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
       { id: '3', title: 'Notes', videoSrc: '' },
       { id: '4', title: 'Further Reading', videoSrc: '' },
+      { id: '5', title: 'Quiz' }
     ],
   },
   // Add more sections as needed
@@ -22,12 +23,14 @@ const content = {
   '2': 'In this video lecture, we will go through React fundamentals. Watch the video to understand the core concepts of React.',
   '3': 'You can find the lecture notes [here](https://example.com/lecture-notes). These notes provide a detailed overview of the lecture topics.',
   '4': 'Further reading materials and resources can be found [here](https://example.com/further-reading). Explore these resources to deepen your understanding of React.',
+  '5': 'This is a quiz to test your knowledge on React. [Start Quiz](https://example.com/quiz).'
 };
 
 export const Lecture = () => {
   const [selectedPart, setSelectedPart] = useState('1');
   const [videoSrc, setVideoSrc] = useState(sections[0].parts[0].videoSrc);
   const [loading, setLoading] = useState(false);
+  const [completedParts, setCompletedParts] = useState({});
 
   const handlePartClick = useCallback((partId) => {
     setLoading(true); // Show loader while fetching data
@@ -36,7 +39,20 @@ export const Lecture = () => {
     setVideoSrc(selectedPart?.videoSrc || '');
     setLoading(false); // Hide loader after data is set
   }, []);
-  
+
+  const handleCheckboxChange = (partId) => {
+    setCompletedParts(prevState => ({
+      ...prevState,
+      [partId]: !prevState[partId],
+    }));
+  };
+
+  const calculateCompletionPercentage = () => {
+    const totalParts = sections[0].parts.length;
+    const completedPartsCount = Object.values(completedParts).filter(Boolean).length;
+    return (completedPartsCount / totalParts) * 100;
+  };
+
   const videoJsOptions = {
     controls: true,
     responsive: true,
@@ -68,13 +84,21 @@ export const Lecture = () => {
                   className={`section-part ${part.id === selectedPart ? 'active' : ''}`}
                   onClick={() => handlePartClick(part.id)}
                 >
-                  <span className="part-icon">
-                    {part.id === '1' && <FaInfoCircle />}
-                    {part.id === '2' && <FaPlay />}
-                    {part.id === '3' && <FaBook />}
-                    {part.id === '4' && <FaLink />}
+                  <span>
+                    <span className="part-icon">
+                      {part.id === '1' && <FaInfoCircle />}
+                      {part.id === '2' && <FaPlay />}
+                      {part.id === '3' && <FaBook />}
+                      {part.id === '4' && <FaLink />}
+                    </span>
+                    {part.title}
                   </span>
-                  {part.title}
+                  <input
+                    type="checkbox"
+                    checked={completedParts[part.id] || false}
+                    onChange={() => handleCheckboxChange(part.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </li>
               ))}
             </ul>
@@ -86,17 +110,20 @@ export const Lecture = () => {
           <Loader /> // Display loading animation
         ) : (
           <>
+            <div className="content">
+              <h2>Selected Part: {sections[0].parts.find(part => part.id === selectedPart)?.title}</h2>
+              <p dangerouslySetInnerHTML={{ __html: content[selectedPart] }} />
+            </div>
             {videoSrc && (
               <div className="video-container">
                 <VideoPlayer key={videoSrc} options={videoJsOptions} /> {/* Ensure player updates */}
               </div>
             )}
-            <div className="content">
-              <h2>Selected Part: {sections[0].parts.find(part => part.id === selectedPart)?.title}</h2>
-              <p dangerouslySetInnerHTML={{ __html: content[selectedPart] }} />
-            </div>
           </>
         )}
+        <div className="completion-percentage">
+          Completion: {calculateCompletionPercentage()}%
+        </div>
       </main>
     </div>
   );
