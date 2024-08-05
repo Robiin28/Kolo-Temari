@@ -7,18 +7,24 @@ const VideoPlayer = ({ options }) => {
   const playerRef = useRef(null);
 
   useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.dispose();
+    // Initialize player
+    if (videoRef.current) {
+      playerRef.current = videojs(videoRef.current, options);
     }
 
-    playerRef.current = videojs(videoRef.current, options);
-
+    // Clean up player on component unmount or options change
     return () => {
       if (playerRef.current) {
         playerRef.current.dispose();
       }
     };
-  }, [options]);
+  }, []); // Empty dependency array ensures this runs only on mount and unmount
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.src(options.sources); // Update the video source
+    }
+  }, [options.sources]); // Update player when videoSrc changes
 
   return (
     <div data-vjs-player>

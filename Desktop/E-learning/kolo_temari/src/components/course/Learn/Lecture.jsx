@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import VideoPlayer from './VideoPlayer';
 import './lecture.css';
 import { FaPlay, FaInfoCircle, FaBook, FaLink } from 'react-icons/fa';
-import Loader from './Loader'; // Create a Loader component for loading animation
+import Loader from './Loader';
 
 const sections = [
   {
@@ -37,7 +37,6 @@ export const Lecture = () => {
     setLoading(false); // Hide loader after data is set
   }, []);
   
-
   const videoJsOptions = {
     controls: true,
     responsive: true,
@@ -89,7 +88,7 @@ export const Lecture = () => {
           <>
             {videoSrc && (
               <div className="video-container">
-                <VideoPlayer key={videoSrc} options={videoJsOptions} />
+                <VideoPlayer key={videoSrc} options={videoJsOptions} /> {/* Ensure player updates */}
               </div>
             )}
             <div className="content">
