@@ -10,6 +10,7 @@ import { Contact } from './components/contact/Contact';
 import { HomeLanding } from './components/homePage/HomeLanding';
 import { SpecficCourse } from './components/course/specfic/SpecficCourse';
 import {Lecture} from './components/course/Learn/Lecture';
+import {Quiz} from './components/course/course-detail/quiz/QuizData';
 // import {CourseDetail} from './components/course/course-detail/Coure-detail'
 import CourseDetail from './components/course/course-detail/CourseDetail';
 const AppContent = () => {
@@ -32,7 +33,7 @@ const AppContent = () => {
         <Route exact path="/HomeLanding" component={HomeLanding} />
         <Route exact path="/learn" component={Lecture} />
         <Route exact path="/course-detail" component={CourseDetail} />
-
+        <Route exact path="/quiz" component={Quiz} />
       </Switch>
     </div>
   );
