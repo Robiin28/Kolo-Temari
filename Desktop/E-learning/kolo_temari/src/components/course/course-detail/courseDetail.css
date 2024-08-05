@@ -1,0 +1,97 @@
+.user-profile {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    text-align: center; 
+    width: 100%;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-picture {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px; /* Space between picture and text */
+    border: 3px solid #ddd; /* Add border for better visibility */
+  }
+  
+  .profile-info h1 {
+    margin: 0;
+    font-size: 2.5em; /* Larger font size for name */
+  }
+  
+  .profile-info p {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #555; /* Slightly darker text for better readability */
+  }
+  
+  .enrolled-courses, .completed-courses, .certificates {
+    margin-bottom: 30px;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #333; /* Darker color for section headings */
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #444;
+  }
+  
+  .certificates a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+  }
+  
+  .certificates a:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker color on hover */
+  }
+  
+  @media (max-width: 600px) {
+    .profile-header {
+      flex-direction: column;
+    }
+  
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+    }
+  
+    .profile-info h1 {
+      font-size: 2em;
+    }
+  
+    .profile-info p {
+      font-size: 1em;
+    }
+  
+    h2 {
+      font-size: 1.5em;
+    }
+  
+    li {
+      font-size: 1em;
+    }
+  }
+  
