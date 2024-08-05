@@ -9,6 +9,7 @@ import { Pricing } from './components/pricing/Pricing';
 import { Contact } from './components/contact/Contact';
 import { HomeLanding } from './components/homePage/HomeLanding';
 import { SpecficCourse } from './components/course/specfic/SpecficCourse';
+import {Lecture} from './components/course/Learn/Lecture';
 
 const AppContent = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const AppContent = () => {
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/specfic-course" component={SpecficCourse} />
         <Route exact path="/HomeLanding" component={HomeLanding} />
+        <Route exact path="/learn" component={Lecture} />
       </Switch>
     </div>
   );
