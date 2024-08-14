@@ -57,7 +57,7 @@ export const Dashboard = () => {
         return (
           <div className='boxen'>
             <div className='all-course'>
-              <h1>Course Overview</h1>
+              <h1>Hello robel</h1>
               <div className="select-container courseSelect">
                
               </div>

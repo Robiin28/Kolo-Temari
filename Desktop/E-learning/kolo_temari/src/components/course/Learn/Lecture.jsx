@@ -8,8 +8,24 @@ const sections = [
   {
     title: 'Section 1: Introduction to React',
     parts: [
-      { id: '1', title: 'Introduction', videoSrc: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
-      { id: '2', title: 'Video Lecture', videoSrc: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+      {
+        id: '1',
+        title: 'Introduction',
+        videoSrc: [
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '720p' },
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '480p' },
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '360p' },
+        ],
+      },
+      {
+        id: '2',
+        title: 'Video Lecture',
+        videoSrc: [
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '720p' },
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '480p' },
+          { src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', type: 'application/x-mpegURL', label: '360p' },
+        ],
+      },
       { id: '3', title: 'Notes', videoSrc: '' },
       { id: '4', title: 'Further Reading', videoSrc: '' },
       { id: '5', title: 'Quiz' }
@@ -36,7 +52,7 @@ export const Lecture = () => {
     setLoading(true); // Show loader while fetching data
     setSelectedPart(partId);
     const selectedPart = sections[0].parts.find(part => part.id === partId);
-    setVideoSrc(selectedPart?.videoSrc || '');
+    setVideoSrc(selectedPart?.videoSrc || []);
     setLoading(false); // Hide loader after data is set
   }, []);
 
@@ -57,7 +73,7 @@ export const Lecture = () => {
     controls: true,
     responsive: true,
     fluid: true,
-    sources: videoSrc ? [{ src: videoSrc, type: 'application/x-mpegURL' }] : [],
+    sources: videoSrc,
     tracks: [
       {
         kind: 'captions',
@@ -114,7 +130,7 @@ export const Lecture = () => {
               <h2>Selected Part: {sections[0].parts.find(part => part.id === selectedPart)?.title}</h2>
               <p dangerouslySetInnerHTML={{ __html: content[selectedPart] }} />
             </div>
-            {videoSrc && (
+            {videoSrc.length > 0 && (
               <div className="video-container">
                 <VideoPlayer key={videoSrc} options={videoJsOptions} /> {/* Ensure player updates */}
               </div>

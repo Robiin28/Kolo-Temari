@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 
 const VideoPlayer = ({ options }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
+  const [selectedSource, setSelectedSource] = useState(options.sources[0]);
 
   useEffect(() => {
     // Initialize player
@@ -18,17 +19,30 @@ const VideoPlayer = ({ options }) => {
         playerRef.current.dispose();
       }
     };
-  }, []); // Empty dependency array ensures this runs only on mount and unmount
+  }, []);
 
   useEffect(() => {
     if (playerRef.current) {
-      playerRef.current.src(options.sources); // Update the video source
+      playerRef.current.src(selectedSource); // Update the video source
     }
-  }, [options.sources]); // Update player when videoSrc changes
+  }, [selectedSource]);
+
+  const handleQualityChange = (event) => {
+    const newSource = options.sources.find(source => source.label === event.target.value);
+    setSelectedSource(newSource);
+  };
 
   return (
     <div data-vjs-player>
-      <video ref={videoRef} className="video-js"></video>
+      <div className="video-quality-selector">
+        <label htmlFor="quality">Quality: </label>
+        <select id="quality" onChange={handleQualityChange} value={selectedSource.label}>
+          {options.sources.map((source) => (
+            <option key={source.label} value={source.label}>{source.label}</option>
+          ))}
+        </select>
+      </div>
+      <video ref={videoRef} className="video-js vjs-default-skin" controls preload="auto"></video>
     </div>
   );
 };

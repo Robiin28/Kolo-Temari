@@ -24,11 +24,13 @@
     "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
+    "recharts": "^2.12.7",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.11",
     "typewriter-effect": "^2.21.0",
     "video.js": "^8.17.1",
     "videojs-hls-quality-selector": "^2.0.0",
+    "videojs-http-source-selector": "^1.1.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

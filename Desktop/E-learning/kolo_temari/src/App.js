@@ -9,22 +9,25 @@ import { Pricing } from './components/pricing/Pricing';
 import { Contact } from './components/contact/Contact';
 import { HomeLanding } from './components/homePage/HomeLanding';
 import { SpecficCourse } from './components/course/specfic/SpecficCourse';
-import {Lecture} from './components/course/Learn/Lecture';
-<<<<<<< Updated upstream
-import {Quiz} from './components/course/course-detail/quiz/QuizData';
-=======
->>>>>>> Stashed changes
-// import {CourseDetail} from './components/course/course-detail/Coure-detail'
+import { Lecture } from './components/course/Learn/Lecture';
+import { Quiz } from './components/course/course-detail/quiz/QuizData';
+import { Profile } from './components/course/profile/profile';
+import { AdminDashboard } from './components/course/admin/AdminDashboard';
 import CourseDetail from './components/course/course-detail/CourseDetail';
+import {Cart} from './components/cart/Cart';
 const AppContent = () => {
   const location = useLocation();
 
-  // Determine if the current route is "/HomeLanding"
+  // Determine if the current route is "/HomeLanding" or "/admin"
   const isHomeLandingRoute = location.pathname === '/HomeLanding';
+  const isAdminLandingRoute = location.pathname === '/admin';
+  
+  // Show Header if not on HomeLanding or AdminDashboard
+  const shouldShowHeader = !(isHomeLandingRoute || isAdminLandingRoute);
 
   return (
     <div>
-      {!isHomeLandingRoute && <Header />}
+      {shouldShowHeader && <Header />}
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/about" component={About} />
@@ -36,11 +39,10 @@ const AppContent = () => {
         <Route exact path="/HomeLanding" component={HomeLanding} />
         <Route exact path="/learn" component={Lecture} />
         <Route exact path="/course-detail" component={CourseDetail} />
-<<<<<<< Updated upstream
         <Route exact path="/quiz" component={Quiz} />
-=======
-
->>>>>>> Stashed changes
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/admin" component={AdminDashboard} />
+        <Route exact path="/cart" component={Cart} />
       </Switch>
     </div>
   );
