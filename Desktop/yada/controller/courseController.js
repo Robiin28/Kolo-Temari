@@ -1,0 +1,109 @@
+const Course = require('../models/CourseModel');
+const asyncErrorHandler = require('../utils/ErrorHandler');
+const CustomErr = require('../utils/CustomErr');
+const APIFeatures = require('../utils/ApiFeatuers');
+const mongoose = require('mongoose');
+
+exports.getAllCourses = asyncErrorHandler(async (req, res, next) => {
+    const features = new APIFeatures(Course.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+
+    const courses = await features.query;
+
+    res.status(200).json({
+        status: 'success',
+        results: courses.length,
+        data: {
+            courses
+        }
+    });
+});
+
+exports.getCourse = asyncErrorHandler(async (req, res, next) => {
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+        return next(new CustomErr('No course found with that ID', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            course
+        }
+    });
+});
+exports.createCourse = asyncErrorHandler(async (req, res, next) => {
+    const { title, description, pic, trailer, status, price, instructor } = req.body;
+    // Ensure price is included if status is paid
+    if (status === 'paid' && !price) {
+        return next(new CustomErr('Price is required when status is "paid".', 400));
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(instructor)) {
+        return next(new CustomErr('Invalid instructor ID format.', 400));
+    }
+
+    try {
+        // Create the course
+        const course = await Course.create({
+            title,
+            description,
+            pic,
+            trailer,
+            status,
+            price,
+            instructor // Directly use the instructor ID
+        });
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                course
+            }
+        });
+    } catch (error) {
+        console.error('Error creating course:', error);
+        return next(new CustomErr('Failed to create course.', 500));
+    }
+});
+
+
+exports.updateCourse = asyncErrorHandler(async (req, res, next) => {
+    // Ensure price is included if status is paid
+    if (req.body.status === 'paid' && !req.body.price) {
+        return next(new CustomErr('Price is required when status is "paid".', 400));
+    }
+
+    const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+
+    if (!course) {
+        return next(new CustomErr('No course found with that ID', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            course
+        }
+    });
+});
+
+exports.deleteCourse = asyncErrorHandler(async (req, res, next) => {
+    const course = await Course.findByIdAndDelete(req.params.id);
+
+    if (!course) {
+        return next(new CustomErr('No course found with that ID', 404));
+    }
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    });
+});
