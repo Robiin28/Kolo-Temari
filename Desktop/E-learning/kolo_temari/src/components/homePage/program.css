@@ -104,7 +104,7 @@
 .boxCourse {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 20px;
+   margin-top: 5vh;
     text-align: center;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -122,8 +122,8 @@
 }
 
 .boxCourse .img img {
-    max-width: 100%;
-    border-radius: 8px; /* Rounded corners for the image */
+    width: 100%;
+    border-radius: 1px;
 }
 
 .leftSelect {
@@ -166,7 +166,7 @@
 }
 
 .MuiTabs-indicator {
-    background-color: #007bff;
+    background-color: #dfe1e4;
 }
 
 /* Select wrapper styles */

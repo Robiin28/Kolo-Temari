@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './cart.css'; // Ensure you have this CSS file for styling
 import { FaStar, FaDollarSign } from 'react-icons/fa'; // For star rating and price icon
 
@@ -25,7 +25,13 @@ const sampleCartItems = [
   }
 ];
 
-export const Cart = ({ cartItems = sampleCartItems }) => {
+export const Cart = () => {
+  const [cartItems, setCartItems] = useState(sampleCartItems);
+
+  const handleRemoveItem = (id) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
   const handleCheckout = () => {
     // Handle checkout process here
     alert('Proceeding to checkout...');
@@ -64,7 +70,16 @@ export const Cart = ({ cartItems = sampleCartItems }) => {
                       ${item.price.toFixed(2)}
                     </div>
                     <div className="item-actions">
-                      <a href="#remove" className="remove-link">Remove from Cart</a>
+                      <a 
+                        href="#remove" 
+                        className="remove-link" 
+                        onClick={(e) => {
+                          e.preventDefault(); 
+                          handleRemoveItem(item.id);
+                        }}
+                      >
+                        Remove from Cart
+                      </a>
                       <a href="#watch" className="watch-link">Watch it for Later</a>
                     </div>
                   </div>

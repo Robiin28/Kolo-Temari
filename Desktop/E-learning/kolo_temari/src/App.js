@@ -13,6 +13,7 @@ import { Lecture } from './components/course/Learn/Lecture';
 import { Quiz } from './components/course/course-detail/quiz/QuizData';
 import { Profile } from './components/course/profile/profile';
 import { AdminDashboard } from './components/course/admin/AdminDashboard';
+import {Page} from './components/Page';
 import CourseDetail from './components/course/course-detail/CourseDetail';
 import {Cart} from './components/cart/Cart';
 const AppContent = () => {
@@ -43,6 +44,7 @@ const AppContent = () => {
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/admin" component={AdminDashboard} />
         <Route exact path="/cart" component={Cart} />
+        <Route exact path="/try" component={Page} />
       </Switch>
     </div>
   );

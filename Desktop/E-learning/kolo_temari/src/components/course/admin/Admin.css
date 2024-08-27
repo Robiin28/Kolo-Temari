@@ -382,36 +382,93 @@ button:disabled {
     border-radius: 4px;
 }
 /* General Form Styles */
+
+/* Course Form Styles */
 .course-form {
-    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.course-form input,
-.course-form textarea,
-.course-form button,
-.course-form select {
-    display: block;
-    width: 70%;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
+/* Input Group Styles */
+.course-form .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.course-form .input-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.course-form .input-group input[type="text"],
+.course-form .input-group input[type="number"],
+.course-form .input-group select,
+.course-form .input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
     border: 1px solid #ddd;
+    font-size: 1em;
+    box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
-.course-form textarea {
-    height: 100px;
+.course-form .input-group textarea {
+    height: 120px;
+    resize: vertical;
 }
 
+.course-form .input-group input[type="file"] {
+    padding: 0;
+    margin-top: 8px;
+}
+
+/* Grid Adjustments for Larger Fields */
+.course-form .input-group.form-field-large {
+    grid-column: span 2;
+}
+
+/* Button Styles */
 .course-form button {
     background-color: #007bff;
-    color: white;
+    color: #ffffff;
     border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1em;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    grid-column: span 2;
+    align-self: start; /* Align button to start of the grid column */
 }
 
 .course-form button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.course-form button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .course-form {
+        grid-template-columns: 1fr;
+    }
+
+    .course-form .input-group.form-field-large {
+        grid-column: span 1;
+    }
 }
 
 /* Ensure image size in table is fixed */
@@ -621,4 +678,92 @@ button:hover {
 h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
+}
+/*   progress of uploading  */
+.upload-progress {
+    margin-top: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+/* Center the upload progress modal and make it more visible */
+.upload-progress-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 1000;
+    width: 500px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Modal content styling */
+.upload-progress-modal .modal-content {
+    padding: 10px;
+}
+
+/* Header styling inside modal */
+.upload-progress-modal h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Paragraph styling inside modal */
+.upload-progress-modal p {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+/* Button styling inside modal */
+.upload-progress-modal button {
+    margin-top: 5px;
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.upload-progress-modal button:hover {
+    background-color: #e60000;
+}
+
+/* Backdrop styling */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Disable interaction with the rest of the page */
+.disabled {
+    pointer-events: none;
 }

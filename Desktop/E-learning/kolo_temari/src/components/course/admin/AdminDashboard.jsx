@@ -7,6 +7,7 @@ import LessonManagement from './LessonManagement';
 import Broadcast from './Broadcast'; // Import Broadcast component
 import Settings from './Settings'; // Import Settings component
 import { AdminFooter } from './AdminFooter';
+import axios from 'axios';
 import './Admin.css'; // Import the updated CSS file for styling
 import { FaTachometerAlt, FaUsers, FaBook, FaChalkboardTeacher, FaChartBar, FaBroadcastTower, FaCog, FaSignOutAlt } from 'react-icons/fa'; // Import icons
 
@@ -69,19 +70,7 @@ export const AdminDashboard = () => {
     };
 
     // Function to handle deleting users
-    const handleDeleteUser = (id, type) => {
-        if (type === 'students') {
-            setStudents(prevStudents => prevStudents.filter(student => student.id !== id));
-        } else if (type === 'instructors') {
-            setInstructors(prevInstructors => prevInstructors.filter(instructor => instructor.id !== id));
-        }
-    };
-
-    // Function to handle updating users
-    const handleUpdateUser = (id, type) => {
-        alert(`Update user functionality for ID: ${id} not implemented.`);
-        // Implement update logic here
-    };
+   
 
     // Render content based on the active tab
     const renderContent = () => {
@@ -96,8 +85,9 @@ export const AdminDashboard = () => {
             case 'users':
                 return (
                     <>
-                        <UserTable data={students} type="students" onUpdate={handleUpdateUser} onDelete={handleDeleteUser} />
-                        <UserTable data={instructors} type="instructors" onUpdate={handleUpdateUser} onDelete={handleDeleteUser} />
+                    <UserTable data={students} role="student" />
+                    <UserTable data={instructors} role="instructor"/>
+
                     </>
                 );
             case 'courses':
