@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
-import { Header } from './components/common/head/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainLayout from './MainLayout';
 import { Home } from './components/home/Home';
 import { About } from './components/About/About';
 import { Course } from './components/course/Course';
@@ -13,49 +13,45 @@ import { Lecture } from './components/course/Learn/Lecture';
 import { Quiz } from './components/course/course-detail/quiz/QuizData';
 import { Profile } from './components/course/profile/profile';
 import { AdminDashboard } from './components/course/admin/AdminDashboard';
-import {Page} from './components/Page';
+import { Page } from './components/Page';
 import CourseDetail from './components/course/course-detail/CourseDetail';
-import {Cart} from './components/cart/Cart';
-const AppContent = () => {
-  const location = useLocation();
-
-  // Determine if the current route is "/HomeLanding" or "/admin"
-  const isHomeLandingRoute = location.pathname === '/HomeLanding';
-  const isAdminLandingRoute = location.pathname === '/admin';
-  
-  // Show Header if not on HomeLanding or AdminDashboard
-  const shouldShowHeader = !(isHomeLandingRoute || isAdminLandingRoute);
-
-  return (
-    <div>
-      {shouldShowHeader && <Header />}
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/course" component={Course} />
-        <Route exact path="/team" component={Team} />
-        <Route exact path="/price" component={Pricing} />
-        <Route exact path="/contact" component={Contact} />
-        <Route exact path="/specfic-course" component={SpecficCourse} />
-        <Route exact path="/HomeLanding" component={HomeLanding} />
-        <Route exact path="/learn" component={Lecture} />
-        <Route exact path="/course-detail" component={CourseDetail} />
-        <Route exact path="/quiz" component={Quiz} />
-        <Route exact path="/profile" component={Profile} />
-        <Route exact path="/admin" component={AdminDashboard} />
-        <Route exact path="/cart" component={Cart} />
-        <Route exact path="/try" component={Page} />
-      </Switch>
-    </div>
-  );
-};
+import { Cart } from './components/cart/Cart';
+import { RootLayout } from './components/course/Learn/RootLayout';
 
 const App = () => {
   return (
     <Router>
-      <AppContent />
+      <Routes>
+        {/* Main layout route */}
+        <Route path="/" element={<MainLayout />}>
+          {/* Child routes for MainLayout */}
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="course" element={<Course />} />
+          <Route path="team" element={<Team />} />
+          <Route path="price" element={<Pricing />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="specfic-course" element={<SpecficCourse />} />
+          <Route path="course-detail" element={<CourseDetail />} />
+          <Route path="quiz" element={<Quiz />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="try" element={<Page />} />
+        </Route>
+        
+        {/* Routes for learning section */}
+        <Route path="/learn" element={<RootLayout />}>
+          <Route path="lecture" element={<Lecture />} />
+        </Route>
+
+        {/* Route for AdminDashboard */}
+        <Route path="admin/*" element={<AdminDashboard />} />
+
+        {/* Special case for the HomeLanding route without a layout */}
+        <Route path="HomeLanding" element={<HomeLanding />} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;

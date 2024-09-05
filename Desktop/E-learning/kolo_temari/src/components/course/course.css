@@ -1,4 +1,4 @@
-.courses {
+.courses-Table {
     display: flex;
     flex-direction: column;
     padding: 0px;
@@ -9,7 +9,7 @@
     background-color: transparent; 
 }
 
-.top {
+.course-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,12 +17,12 @@
     width: 80%;
 }
 
-.search-bar {
+.search-bars {
     display: flex;
     align-items: center; 
 }
 
-.search-input {
+.search-inputs {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -58,16 +58,10 @@
     border: 1px solid #ccc;
 }
 
-.bottom {
+.bottomCourse {
     display: flex;
     flex-direction: column;
 }
-
-.left {
-    display: flex;
-    flex-direction: column;
-}
-
 .checkbox-group,
 .status,
 .level,
@@ -181,7 +175,7 @@ aspect-ratio: 1;
 
 
 
-.overlay {
+.overlayCourse {
     width: 380px; 
     background-color: white; 
     border-radius: 8px; 
@@ -203,7 +197,7 @@ aspect-ratio: 1;
     margin-top: 1vh; 
 }
 
-.overlay .review-button {
+.overlayCourse .review-button {
     padding: 10px 15px;
     width: 100%;
     background-color: rgb(233, 107, 3);
