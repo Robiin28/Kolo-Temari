@@ -19,7 +19,19 @@ const enrollmentSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'completed', 'cancelled'],
         default: 'active'
+    },
+    progress: {
+        type: Number,
+        default: 0, // percentage completion (0-100)
+    },
+    lastAccessed: {
+        type: Date,
+    },
+    completionDate: {
+        type: Date,
     }
+}, {
+    timestamps: true, // Automatically manage createdAt and updatedAt fields
 });
 
 const Enrollment = mongoose.model('Enrollment', enrollmentSchema);

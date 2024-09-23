@@ -3,26 +3,33 @@ const paymentController = require('../controller/paymentController');
 const authController = require('../controller/authController');
 const router = express.Router();
 
-// Protect all routes after this middleware (uncomment if authentication is required)
-// router.use(authController.protect);
+// Protect all routes after this middleware (optional: uncomment if authentication is required)
+router.use(authController.protect);  // Ensure user is authenticated before accessing any route
 
+// Route to get all payments or initialize payment
 router.route('/')
-    .get(paymentController.getAllPayments)  // Get all payments
+    .get(
+        // authController.restrictTo('admin'),  // Only admin can get all payment records
+        paymentController.getAllPayments
+    )
     .post(
-        // Restrict the `pay` route to specific roles like 'student' and 'instructor' if needed
-        // authController.restrictTo('student', 'instructor'),
-        paymentController.pay                 // Initialize payment
+        // authController.restrictTo('student', 'instructor'),  // Only students or instructors can initialize payments
+        paymentController.pay                                // Initialize payment
     );
 
+// Route to get a specific payment by ID or delete it
 router.route('/:id')
-    .get(paymentController.getPayment)      // Get a payment by ID
+    .get(
+        authController.restrictTo('admin', 'student', 'instructor'),  // Admin, student, or instructor can view a payment by ID
+        paymentController.getPayment
+    )
     .delete(
-        authController.restrictTo('admin'),  // Only 'admin' can delete payments
-        paymentController.deletePayment      // Delete a payment by ID
+        authController.restrictTo('admin'),  // Only admin can delete payments
+        paymentController.deletePayment
     );
 
-// Add this route for payment verification
+// Route to verify payment after successful Chapa checkout
 router.route('/success')
-    .get(paymentController.verifyPayment);  // Verify payment based on `tx_ref`
+    .post(paymentController.verifyPayment);  // Verifies the payment by tx_ref after Chapa redirects
 
 module.exports = router;

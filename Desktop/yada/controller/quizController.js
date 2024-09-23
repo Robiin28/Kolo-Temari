@@ -2,6 +2,7 @@ const Quiz = require('../models/QuizModel');
 const asyncErrorHandler = require('../utils/ErrorHandler');
 const CustomErr = require('../utils/CustomErr');
 
+// Get all quizzes
 exports.getAllQuizzes = asyncErrorHandler(async (req, res, next) => {
     const quizzes = await Quiz.find();
     res.status(200).json({
@@ -13,6 +14,7 @@ exports.getAllQuizzes = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
+// Get a specific quiz by ID
 exports.getQuiz = asyncErrorHandler(async (req, res, next) => {
     const quiz = await Quiz.findById(req.params.id);
 
@@ -28,8 +30,22 @@ exports.getQuiz = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
+// Create a new quiz
 exports.createQuiz = asyncErrorHandler(async (req, res, next) => {
-    const quiz = await Quiz.create(req.body);
+    const { title, lesson, questions, durationMinutes } = req.body;
+
+    // Validate required fields
+    if (!title || !lesson || !questions) {
+        return next(new CustomErr('Please provide title, lesson, and questions', 400));
+    }
+
+    const quiz = await Quiz.create({
+        title,
+        lesson,
+        questions,
+        durationMinutes
+    });
+
     res.status(201).json({
         status: 'success',
         data: {
@@ -38,11 +54,24 @@ exports.createQuiz = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
+// Update an existing quiz
 exports.updateQuiz = asyncErrorHandler(async (req, res, next) => {
-    const quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true
-    });
+    const { title, lesson, questions, durationMinutes } = req.body;
+
+    const quiz = await Quiz.findByIdAndUpdate(
+        req.params.id,
+        {
+            title,
+            lesson,
+            questions,
+            durationMinutes,
+            updatedAt: Date.now() // Update the timestamp manually
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
 
     if (!quiz) {
         return next(new CustomErr('No quiz found with that ID', 404));
@@ -56,6 +85,7 @@ exports.updateQuiz = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
+// Delete a quiz by ID
 exports.deleteQuiz = asyncErrorHandler(async (req, res, next) => {
     const quiz = await Quiz.findByIdAndDelete(req.params.id);
 

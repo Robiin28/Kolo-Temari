@@ -13,13 +13,20 @@ router.use(authController.protect);
 router.use(validateCourseId);
 
 // Routes
+
 router.route('/')
     .get(lessonController.getAllLessons)
-    .post(authController.restrictTo('instructor', 'admin'), lessonController.createLesson);
+    .post(
+        // authController.restrictTo('instructor', 'admin'), 
+        lessonController.createLesson);
 
 router.route('/:id')
     .get(lessonController.getLesson)
-    .patch(authController.restrictTo('instructor', 'admin'), lessonController.updateLesson)
-    .delete(authController.restrictTo('instructor', 'admin'), lessonController.deleteLesson);
+    .patch(
+        // authController.restrictTo('instructor', 'admin'), 
+    lessonController.updateLesson)
+    .delete(
+        // authController.restrictTo('instructor', 'admin'), 
+        lessonController.deleteLesson);
 
 module.exports = router;

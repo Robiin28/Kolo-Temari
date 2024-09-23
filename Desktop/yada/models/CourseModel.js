@@ -37,6 +37,10 @@ const courseSchema = new Schema({
         ref: 'Instructor',
         required: [true, 'A course must have an instructor']
     },
+    category: { // Corrected from 'catagory' to 'category'
+        type: String,
+        required: [true, 'Please add the category of the course']
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -47,6 +51,7 @@ const courseSchema = new Schema({
     }
 });
 
+// Middleware to validate price when status is 'paid'
 courseSchema.pre('save', function(next) {
     if (this.status === 'paid' && !this.price) {
         return next(new Error('Price is required when status is "paid".'));

@@ -131,5 +131,36 @@ exports.deleteUser = asyncErrorHandler(async (req, res, next) => {
         data: null
     });
 });
+// Get user by ID handler
+exports.getUserById = asyncErrorHandler(async (req, res, next) => {
+    const userId = req.params.id;
+
+    const user = await User.findById(userId).select('-password'); // Exclude password from the response
+
+    if (!user) {
+        return next(new CustomErr('User not found', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user,
+        },
+    });
+});
+exports.getMe = asyncErrorHandler(async (req, res, next) => {
+    const user = await User.findById(req.user._id).select('-password'); // Exclude password
+
+    if (!user) {
+        return next(new CustomErr('User not found', 404));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user,
+        },
+    });
+});
 
 

@@ -1,33 +1,34 @@
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const mongoose = require('mongoose');
 
-
-const RefreshTokenSchema = new mongoose.Schema({
+const refreshTokenSchema = new mongoose.Schema({
     token: {
         type: String,
-        required: true,
-        unique: true,
+        required: true
     },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: true
     },
-    createdAt: {
+    expiresAt: {
         type: Date,
-        default: Date.now,
-        expires: '7d',  // This sets the token to expire after 7 days
-    },
+        required: true
+    }
 });
 
-RefreshTokenSchema.statics.createRefreshToken = async function(userId, refreshToken) {
-    const newRefreshToken = new this({
-        userId,
-        token: refreshToken
+// Static method to create refresh token
+refreshTokenSchema.statics.createRefreshToken = async function (userId, token) {
+    const expiresIn = 30 * 24 * 60 * 60 * 1000; // Example: 30 days
+    const expiresAt = new Date(Date.now() + expiresIn);
+
+    const refreshToken = await this.create({
+        token,
+        user: userId,
+        expiresAt
     });
-    await newRefreshToken.save();
-    return newRefreshToken;
+
+    return refreshToken;
 };
 
-const RefreshToken = mongoose.model('RefreshToken', RefreshTokenSchema);
+const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema);
 module.exports = RefreshToken;

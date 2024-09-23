@@ -36,8 +36,10 @@ exports.getCourse = asyncErrorHandler(async (req, res, next) => {
         }
     });
 });
+
 exports.createCourse = asyncErrorHandler(async (req, res, next) => {
-    const { title, description, pic, trailer, status, price, instructor } = req.body;
+    const { title, description, pic, trailer, status, price, instructor, category } = req.body;
+
     // Ensure price is included if status is paid
     if (status === 'paid' && !price) {
         return next(new CustomErr('Price is required when status is "paid".', 400));
@@ -56,7 +58,8 @@ exports.createCourse = asyncErrorHandler(async (req, res, next) => {
             trailer,
             status,
             price,
-            instructor // Directly use the instructor ID
+            instructor, // Directly use the instructor ID
+            category    // Include category in course creation
         });
 
         res.status(201).json({
@@ -70,7 +73,6 @@ exports.createCourse = asyncErrorHandler(async (req, res, next) => {
         return next(new CustomErr('Failed to create course.', 500));
     }
 });
-
 
 exports.updateCourse = asyncErrorHandler(async (req, res, next) => {
     // Ensure price is included if status is paid
@@ -107,3 +109,30 @@ exports.deleteCourse = asyncErrorHandler(async (req, res, next) => {
         data: null
     });
 });
+exports.getRelatedCourses = asyncErrorHandler(async (req, res, next) => {
+    const courseId = req.params.courseId; // Use courseId to match the route
+
+    // Find the course to get its category
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+        return next(new CustomErr('No course found with that ID', 404));
+    }
+
+    // Fetch related courses based on the category of the found course
+    const relatedCourses = await Course.find({ category: course.category, _id: { $ne: courseId } });
+
+    if (!relatedCourses.length) {
+        return next(new CustomErr('No related courses found for this category', 202));
+    }
+
+    res.status(200).json({
+        status: 'success',
+        results: relatedCourses.length,
+        data: {
+            courses: relatedCourses
+        }
+    });
+});
+
+
